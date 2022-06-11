@@ -15,25 +15,23 @@ while idx < len_eq:
     idx += 1
 lst.append(int(eq[prev_idx:]))
 
-res = None
-minus_mode = False
-mode = 0
-tmp = 0
-for i in range(len(lst)):
-    if res is None:
-        res = lst[i]
+while '+' in lst:
+    idx = lst.index('+')
+    tmp = lst[idx-1] + lst[idx + 1]
     
-    elif lst[i] == '+':
-        mode = 1
+    lst.insert(idx-1, tmp)
     
-    elif lst[i] == '-':
-        mode = -1
-        minus_mode = True
+    lst.pop(idx+2)
+    lst.pop(idx+1)
+    lst.pop(idx)
     
-    else:
-        if mode == 0:
-            tmp = lst[i]
-        
-        if mode == -1:
-            tmp = tmp + mode*lst[i]
-        
+while '-' in lst:
+    idx = lst.index('-')
+    tmp = lst[idx-1] - lst[idx + 1]
+    lst.insert(idx-1, tmp)
+    
+    lst.pop(idx+2)
+    lst.pop(idx+1)
+    lst.pop(idx)
+
+print(lst[0])
