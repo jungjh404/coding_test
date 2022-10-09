@@ -39,8 +39,8 @@ home_num = len(home_lst)
 answer = None
 
 combination(tuple(), 0, 0)
-print(comb_lst)
 # print(comb_lst)
+
 for comb in comb_lst:
     tmp = 0
 
