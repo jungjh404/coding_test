@@ -1,42 +1,58 @@
 import sys
 from collections import deque
 
-N, M, R = map(int, sys.stdin.readline().split())
+input = sys.stdin.readline
 
-link_dict = {}
+N,M,R = map(int, input().split())
+map_dict = {}
+visited = {}
+answer_dict = {}
 
-for i in range(1, N+1):
-    link_dict[i] = [0, []]
 
-for _ in range(M):
-    u, v = map(int, sys.stdin.readline().split())
+for i in range(M):
+    u, v = map(int, input().split())
     
-    link_dict[u][1].append(v)
-    link_dict[v][1].append(u)
+    if u in map_dict:
+        map_dict[u].append(v)
+    
+    else:
+        map_dict[u] = [v]
 
-for i in range(1, N+1):
-    link_dict[i][1].sort()
+    if v in map_dict:
+        map_dict[v].append(u)
+    
+    else:
+        map_dict[v] = [u]
 
-visited = [0 for _ in range(N)]
+for key in map_dict.keys():
+    map_dict[key].sort(reverse=True)
 
+queue = deque()
+queue.append(R)
+size = 1
 cnt = 1
 
-while 1:
-    visited[R-1] = cnt
+while size > 0:
+    target = queue.pop()
+    size -= 1
 
-    try:
-        next = link_dict[R][1][link_dict[R][0]]
-        link_dict[R][0] += 1
-    except:
-        break
 
-    if visited[next-1] != 0:
+    if target in visited:
         continue
 
     else:
-        R = next
+        visited[target] = True
+        answer_dict[target] = cnt
         cnt += 1
 
-for i in range(N):
-    print(visited[i])
+        if target in map_dict:
+            for num in map_dict[target]:
+                queue.append(num)
+                size += 1
 
+
+for i in range(1, N+1):
+    if i in answer_dict:
+        print(answer_dict[i])
+    else:
+        print(0)
