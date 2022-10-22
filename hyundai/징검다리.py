@@ -1,14 +1,16 @@
 import sys
 input = sys.stdin.readline
 
-N, K = map(int, input().split())
-score = list(map(int, input().split()))
-dp_score = [0]
-for i in range(N):
-    dp_score.append(dp_score[-1] + score[i])
+N = int(input())
+rocks = list(map(int, input().split()))
+dp = [0]*N
+dp[0] = 1
 
-for _ in range(K):
-    a_i, b_i = map(int, input().split())
-    num_people = b_i - a_i + 1
-    answer = (dp_score[b_i] - dp_score[a_i-1]) / num_people
-    print("{:.2f}".format(answer))
+for i in range(1, N):
+    max_rocks = 0
+    for j in range(i):
+        if rocks[i] > rocks[j]:
+            max_rocks = max(max_rocks, dp[j])
+    dp[i] = max_rocks + 1
+
+print(max(dp))
